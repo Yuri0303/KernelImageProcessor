@@ -6,4 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(KernelImageProcessor main.cpp
         Image.cpp
         Image.h
-        PnmImage.h)
+        PnmImage.h
+        Kernel.cpp
+        Kernel.h)

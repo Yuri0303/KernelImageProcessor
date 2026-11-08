@@ -8,4 +8,6 @@ add_executable(KernelImageProcessor main.cpp
         Image.h
         PnmImage.h
         Kernel.cpp
-        Kernel.h)
+        Kernel.h
+        FileHandler.cpp
+        FileHandler.h)

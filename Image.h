@@ -23,7 +23,7 @@ public:
     [[nodiscard]] virtual uint16_t* getAt(int index) const = 0;
     [[nodiscard]] virtual uint16_t* getAt(int posX, int posY) const = 0;
 
-    virtual ~Image() = 0;
+    virtual ~Image() = default;
 };
 
 

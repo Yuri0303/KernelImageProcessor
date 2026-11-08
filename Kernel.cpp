@@ -4,6 +4,8 @@
 
 #include "Kernel.h"
 
+#include <stdexcept>
+
 Kernel::Kernel(const uint8_t size): size(size) {
     matrix = nullptr;
 }
@@ -22,3 +24,11 @@ Kernel Kernel::createGaussian() {
     }
     return kernel;
 }
+
+float Kernel::getAt(const int index) const {
+    if (index < 0 || index >= size) {
+        throw std::out_of_range("Index out of bound");
+    }
+    return matrix[index];
+}
+

@@ -18,6 +18,8 @@ public:
 
     static Kernel createGaussian();
 
+    [[nodiscard]] float getAt(int index) const;
+
 };
 
 

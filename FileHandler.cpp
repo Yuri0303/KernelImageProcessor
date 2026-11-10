@@ -32,7 +32,7 @@ void* FileHandler::parsePixelsAscii(std::ifstream& file, const size_t matrixSize
         uint8_t pixel;
         int i = 0;
         while (i < matrixSize && !file.eof()) {
-            pixel = file.get() - 0x30;  //get() reads the byte, that is '1' -> so 49 decimal. To convert, subract 30 hex (48 decimal)
+            pixel = file.get() - 0x30;  //get() reads the byte, that is '1' -> so 49 decimal. To convert, subtract 30 hex (48 decimal)
             static_cast<uint8_t*>(pixels)[i] = pixel;
             i++;
             skipCommentsAndSpaces(file);

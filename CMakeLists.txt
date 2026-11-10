@@ -10,4 +10,6 @@ add_executable(KernelImageProcessor main.cpp
         Kernel.cpp
         Kernel.h
         FileHandler.cpp
-        FileHandler.h)
+        FileHandler.h
+        ImageProcessor.cpp
+        ImageProcessor.h)

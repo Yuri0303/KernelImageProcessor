@@ -4,6 +4,8 @@
 
 #include "Image.h"
 
+#include <stdexcept>
+
 uint16_t Image::getWidth() const {
     return width;
 }
@@ -18,4 +20,8 @@ uint8_t Image::getNChannels() const {
 
 uint8_t Image::getBitDepth() const {
     return bitDepth;
+}
+
+uint16_t Image::getMaxValue() const {
+    throw std::logic_error("This file has no max value");
 }

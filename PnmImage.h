@@ -12,43 +12,51 @@
 #include "Image.h"
 
 template<uint8_t bitDepth>
-using pixelType = std::conditional_t<bitDepth == 8, uint8_t, uint16_t>;
+using pixelType = std::conditional_t<bitDepth == 8 || bitDepth == 1, uint8_t, uint16_t>;
 
 template<uint8_t templateNChannels, uint8_t templateBitDepth>
 class PnmImage : public Image {
 private:
     pixelType<templateBitDepth>* pixels;
+    uint16_t maxValue;
 public:
-    PnmImage(uint16_t width, uint16_t height, pixelType<templateBitDepth>* pixels);
-    PnmImage(uint16_t width, uint16_t height);
+    PnmImage(uint16_t width, uint16_t height, uint16_t maxValue);
+    PnmImage(uint16_t width, uint16_t height, uint16_t maxValue, pixelType<templateBitDepth>* pixels);
 
+    [[nodiscard]] uint16_t getMaxValue() const override;
 
     [[nodiscard]] uint16_t* getAt(int index) const override;
 
-    [[nodiscard]] uint16_t* getAt(int posX, int posY) const override;
+    [[nodiscard]] uint16_t* getAt(int row, int col) const override;
 
     ~PnmImage() override;
 
 };
 
 template<uint8_t templateNChannels, uint8_t templateBitDepth>
-PnmImage<templateNChannels, templateBitDepth>::PnmImage(uint16_t width, uint16_t height) {
+PnmImage<templateNChannels, templateBitDepth>::PnmImage(uint16_t width, uint16_t height, uint16_t maxValue) {
     this->width = width;
     this->height = height;
+    this->maxValue = maxValue;
     this->nChannels = templateNChannels;
     this->bitDepth = templateBitDepth;
     this->pixels = new pixelType<templateBitDepth>[width * height * nChannels];
-
 }
 
 template<uint8_t templateNChannels, uint8_t templateBitDepth>
 PnmImage<templateNChannels, templateBitDepth>::PnmImage(uint16_t width, uint16_t height,
-    pixelType<templateBitDepth>* pixels) {
+                                                        uint16_t maxValue, pixelType<templateBitDepth>* pixels) {
     this->width = width;
     this->height = height;
-    this->pixels = pixels;
+    this->maxValue = maxValue;
     this->nChannels = templateNChannels;
     this->bitDepth = templateBitDepth;
+    this->pixels = pixels;
+}
+
+template<uint8_t templateNChannels, uint8_t templateBitDepth>
+uint16_t PnmImage<templateNChannels, templateBitDepth>::getMaxValue() const {
+    return maxValue;
 }
 
 template<uint8_t templateNChannels, uint8_t templateBitDepth>
@@ -58,19 +66,19 @@ uint16_t* PnmImage<templateNChannels, templateBitDepth>::getAt(const int index) 
     }
     auto* pixel = new uint16_t[nChannels];
     for (int i = 0; i < nChannels; i++) {
-        pixel[i] = pixels[index + i];
+        pixel[i] = static_cast<uint16_t>(pixels[index * nChannels + i]);
     }
     return pixel;
 }
 
 template<uint8_t templateNChannels, uint8_t templateBitDepth>
-uint16_t* PnmImage<templateNChannels, templateBitDepth>::getAt(const int posX, const int posY) const {
-    if (posX < 0 || posY < 0 || posX >= width || posY >= height) {
+uint16_t* PnmImage<templateNChannels, templateBitDepth>::getAt(const int row, const int col) const {
+    if (row < 0 || col < 0 || row >= height || col >= width) {
         throw std::out_of_range("Index out of bound");
     }
     auto* pixel = new uint16_t[nChannels];
     for (int i = 0; i < nChannels; i++) {
-        pixel[i] = pixels[(posX * width) + posY + i];
+        pixel[i] = static_cast<uint16_t>(pixels[(row * width + col) * nChannels + i]);
     }
     return pixel;
 }

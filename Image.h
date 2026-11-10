@@ -20,8 +20,10 @@ public:
     [[nodiscard]] uint8_t getNChannels() const;
     [[nodiscard]] uint8_t getBitDepth() const;
 
+    [[nodiscard]] virtual uint16_t getMaxValue() const;
+
     [[nodiscard]] virtual uint16_t* getAt(int index) const = 0;
-    [[nodiscard]] virtual uint16_t* getAt(int posX, int posY) const = 0;
+    [[nodiscard]] virtual uint16_t* getAt(int row, int col) const = 0;
 
     virtual ~Image() = default;
 };
